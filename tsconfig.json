@@ -1,13 +1,22 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ES2022",
-    "moduleResolution": "bundler",
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "baseUrl": "./",
-    "outDir": "./dist/out-tsc"
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "module": "ES2022",
+    "target": "ES2022",
+    "moduleResolution": "bundler",
+    "useDefineForClassFields": false,
+    "lib": [
+      "ES2022",
+      "DOM"
+    ]
   },
   "angularCompilerOptions": {
     "strictTemplates": true

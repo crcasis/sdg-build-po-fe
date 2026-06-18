@@ -1,6 +1,7 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+  "newProjectRoot": "projects",
   "projects": {
     "technical-assessment": {
       "projectType": "application",
@@ -11,16 +12,26 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "browser": "src/main.ts",
+            "outputPath": "dist/technical-assessment",
             "index": "src/index.html",
+            "browser": "src/main.ts",
             "tsConfig": "tsconfig.json",
             "assets": [],
             "styles": [
               "src/styles.css"
             ]
           }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "buildTarget": "technical-assessment:build"
+          }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "d9472f24-de4b-49df-98cf-2e9a64386a79"
   }
 }
