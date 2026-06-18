@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 
       <p>
         This technical assessment was designed and implemented by
-        <strong>crcasis@gmail.com</strong>.
+        <strong>Cristian Casis</strong>.
       </p>
 
       <p>
