@@ -18,9 +18,13 @@ RUN npm run build
 # ==========================
 FROM nginx:alpine
 
-COPY --from=build /app/dist/browser /usr/share/nginx/html
+# El uso de * permite copiar el contenido sin importar si la ruta es /dist, /dist/browser o /dist/tu-app/browser
+COPY --from=build /app/dist/*/browser /usr/share/nginx/html/ 2>/dev/null || \
+    COPY --from=build /app/dist/* /usr/share/nginx/html/ 2>/dev/null || \
+    COPY --from=build /app/dist /usr/share/nginx/html/
 
-RUN sed -i 's/listen 80;/listen 8080;/g' /etc/nginx/conf.d/default.conf
+# Reemplazo dinámico del puerto 80 al 8080 en la configuración de Nginx
+RUN sed -i 's/listen.*80;/listen 8080;/g' /etc/nginx/conf.d/default.conf
 
 EXPOSE 8080
 
