@@ -1,36 +1,18 @@
-# ==========================
-# Build Stage
-# ==========================
-FROM node:20-alpine AS build
+# Usamos una imagen ligera de Python
+FROM python:3.11-slim
 
+# Establecemos el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-COPY package*.json ./
+# Copiamos e instalamos las dependencias primero para aprovechar la caché de Docker
+COPY /src/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN npm install
+# Copiamos el código de la aplicación
+COPY /src/app.py .
 
-COPY . .
-
-RUN npm run build
-
-# ==========================
-# Runtime Stage
-# ==========================
-FROM nginx:alpine
-
-# Usamos la ruta exacta extraída de tu angular.json + la subcarpeta /browser
-COPY --from=build /app/dist/technical-assessment/browser /usr/share/nginx/html
-
-# Configuramos Nginx correctamente para Angular (evita pantallas en blanco y errores 404)
-RUN echo 'server { \
-    listen 8080; \
-    location / { \
-        root /usr/share/nginx/html; \
-        index index.html index.htm; \
-        try_files $uri $uri/ /index.html; \
-    } \
-}' > /etc/nginx/conf.d/default.conf
-
+# Exponemos el puerto 8080
 EXPOSE 8080
 
-CMD ["nginx", "-g", "daemon off;"]
+# Comando para ejecutar la aplicación
+CMD ["python", "app.py"]
