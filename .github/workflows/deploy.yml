@@ -6,8 +6,8 @@ on:
       - main
 
 env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  REGION: europe-west1
+  PROJECT_ID: sdg-hub-project
+  REGION: europe-southwest1
   REPOSITORY: sdgpoc
   SERVICE: gc-p-feai
 
