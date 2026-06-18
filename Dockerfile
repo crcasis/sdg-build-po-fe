@@ -13,19 +13,23 @@ COPY . .
 
 RUN npm run build
 
-RUN mkdir -p /app/ready-to-serve && \
-    FINAL_DIR=$(find /app/dist -name "index.html" -exec dirname {} \; | head -n 1) && \
-    cp -r $FINAL_DIR/* /app/ready-to-serve/
-
 # ==========================
 # Runtime Stage
 # ==========================
 FROM nginx:alpine
 
-COPY --from=build /app/ready-to-serve /usr/share/nginx/html
+# Usamos la ruta exacta extraída de tu angular.json + la subcarpeta /browser
+COPY --from=build /app/dist/technical-assessment/browser /usr/share/nginx/html
 
-# Reemplazo dinámico del puerto
-RUN sed -i 's/listen.*80;/listen 8080;/g' /etc/nginx/conf.d/default.conf
+# Configuramos Nginx correctamente para Angular (evita pantallas en blanco y errores 404)
+RUN echo 'server { \
+    listen 8080; \
+    location / { \
+        root /usr/share/nginx/html; \
+        index index.html index.htm; \
+        try_files $uri $uri/ /index.html; \
+    } \
+}' > /etc/nginx/conf.d/default.conf
 
 EXPOSE 8080
 
